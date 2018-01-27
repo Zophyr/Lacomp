@@ -1,5 +1,5 @@
-import { StackNavigator } from 'react-navigation';
-import { View } from 'react-native';
+import {StackNavigator} from 'react-navigation';
+import {View, StatusBar} from 'react-native';
 import MainContainer from '../containers/mainContainer'
 
 const Root = StackNavigator(
