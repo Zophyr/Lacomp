@@ -5,7 +5,7 @@
   "devDependencies": {
     "eslint": "^4.16.0",
     "eslint-plugin-react": "^7.6.0",
-    "jest-expo": "23.0.0",
+    "jest-expo": "^23.0.0",
     "react-native-scripts": "1.11.0",
     "react-test-renderer": "16.0.0"
   },
@@ -26,6 +26,7 @@
     "expo": "^23.0.4",
     "jshint": "^2.9.5",
     "react": "16.0.0",
-    "react-native": "^0.52"
+    "react-native": "^0.52",
+    "react-navigation": "^1.0.0-beta.27"
   }
 }

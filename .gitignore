@@ -45,3 +45,6 @@ android/keystores/debug.keystore
 
 # tmp
 .tmp
+
+# expo
+.expo
