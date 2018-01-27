@@ -5,23 +5,21 @@ import MainContainer from '../containers/mainContainer'
 const Root = StackNavigator(
     {
         Home: {
-            screen: MainContainer,
-            navigationOptions: {
-                headerLeft: null
-            }
+            screen: MainContainer
         },
     },
     {
         headerMode: 'screen',
         navigationOptions: {
+            header: null,
             headerStyle: {
-                backgroundColor: '#3e9ce9'
+                backgroundColor: '#fff'
             },
             headerTitleStyle: {
-                color: '#fff',
+                color: '#000',
                 fontSize: 20
             },
-            headerTintColor: '#fff'
+            headerTintColor: '#000'
         }
     }
 );
