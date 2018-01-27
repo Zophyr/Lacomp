@@ -52,7 +52,7 @@ class Main extends React.Component {
         // <Image source={{ uri: weather_icon }} style={{ width: 100, height: 100 }} />
         return (
             <View style={styles.mainPage}>
-                <StatusBar hidden={true} />
+                <StatusBar hidden={true}/>
                 <View style={styles.cityName}>
                     <Text style={styles.cityNameText}>{this.state.city}</Text>
                 </View>
@@ -88,7 +88,7 @@ class Main extends React.Component {
                         <Text style={styles.detailItemText}>{this.state.atmospheric_pressure} kPa</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/humidity.png')}
@@ -96,7 +96,7 @@ class Main extends React.Component {
                         <Text style={styles.detailItemText}>{this.state.humidity} %</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/precipitation.png')}
@@ -104,14 +104,14 @@ class Main extends React.Component {
                         <Text style={styles.detailItemText}>{this.state.precipitation} mm</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/cloud.png')} style={styles.detailItemImage}/>
                         <Text style={styles.detailItemText}>{this.state.cloud} 成</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/visibility.png')}
