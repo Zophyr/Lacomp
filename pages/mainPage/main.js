@@ -47,9 +47,7 @@ class Main extends React.Component {
 
     render() {
         let weather_icon = IMAGE_SERVER + this.state.weather_code + '.png';
-        console.log(weather_icon);
 
-        // <Image source={{ uri: weather_icon }} style={{ width: 100, height: 100 }} />
         return (
             <View style={styles.mainPage}>
                 <StatusBar hidden={true} />
@@ -88,7 +86,7 @@ class Main extends React.Component {
                         <Text style={styles.detailItemText}>{this.state.atmospheric_pressure} kPa</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={styles.cutOffLine}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/humidity.png')}
@@ -96,7 +94,7 @@ class Main extends React.Component {
                         <Text style={styles.detailItemText}>{this.state.humidity} %</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={styles.cutOffLine}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/precipitation.png')}
@@ -104,14 +102,14 @@ class Main extends React.Component {
                         <Text style={styles.detailItemText}>{this.state.precipitation} mm</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={styles.cutOffLine}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/cloud.png')} style={styles.detailItemImage}/>
                         <Text style={styles.detailItemText}>{this.state.cloud} 成</Text>
                     </View>
 
-                    <View style={{borderLeftWidth:1, borderColor: 'black', width:0, height: 70}}></View>
+                    <View style={styles.cutOffLine}></View>
 
                     <View style={styles.detailItemView}>
                         <Image source={require('../../images/weatherIcon/visibility.png')}
@@ -285,6 +283,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '500',
         paddingTop: 10,
+    },
+    cutOffLine: {
+        borderLeftWidth:1,
+        borderColor: 'black',
+        width:0,
+        height: 70
     }
 
 
