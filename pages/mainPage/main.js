@@ -1,18 +1,18 @@
 import React, {Component} from 'react';
-import {View, Text, Image, StyleSheet, StatusBar, TouchableOpacity} from 'react-native';
+import {View, Text, Image, StyleSheet, StatusBar, TouchableOpacity, Dimensions} from 'react-native';
 
 import {API_AIR_NOW, API_WEATHER_NOW, IMAGE_SERVER} from '../../constant/urls';
 
 import Picker from 'react-native-picker';
-import area from '../../constant/urls';
+import area from '../../constant/area';
 
 import CitySelect from 'react-native-city-select'
 import CITY from '../../constant/cityData'
 
 class Main extends React.Component {
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             isLoading: true,
@@ -23,7 +23,7 @@ class Main extends React.Component {
             weather_now: {},
 
             // 所在城市
-            city: '广州',
+            city: '首尔',
             // 温度
             temperature: 27,
             // 体感温度
@@ -121,13 +121,12 @@ class Main extends React.Component {
     }
 
     render() {
-        let weather_icon = IMAGE_SERVER + this.state.weather_code + '.png';
 
         return (
             <View style={styles.mainPage}>
                 <StatusBar hidden={true}/>
                 {this.renderCityName()}
-                {this.renderAboutView(weather_icon)}
+                {this.renderAboutView()}
                 {this.renderBigTemperature()}
                 {this.renderDetailView()}
                 {this.renderCitySelect()}
@@ -148,7 +147,9 @@ class Main extends React.Component {
         );
     }
 
-    renderAboutView(weather_icon) {
+    renderAboutView() {
+        let weather_icon = IMAGE_SERVER + this.state.weather_code + '.png';
+
         return (
             <View style={styles.aboutView}>
                 <View style={styles.aboutItemView}>
@@ -174,6 +175,28 @@ class Main extends React.Component {
     }
 
     renderBigTemperature() {
+        if (this.state.temperature <= -10) {
+            return (
+                <View style={styles.bigTemperatureView}>
+                    <Text style={styles.bigTemperatureTextSmall}>{this.state.temperature}</Text>
+                    <View style={styles.bigTemperatureSymbolView}>
+                        <Text style={styles.bigTemperatureSymbol}>°</Text>
+                    </View>
+                </View>
+            );
+        }
+
+        if (0 <= this.state.temperature && this.state.temperature < 10) {
+            return (
+                <View style={styles.bigTemperatureView}>
+                    <Text style={styles.bigTemperatureTextBig}>{this.state.temperature}</Text>
+                    <View style={styles.bigTemperatureSymbolView}>
+                        <Text style={styles.bigTemperatureSymbol}>°</Text>
+                    </View>
+                </View>
+            );
+        }
+
         return (
             <View style={styles.bigTemperatureView}>
                 <Text style={styles.bigTemperatureText}>{this.state.temperature}</Text>
@@ -346,6 +369,16 @@ const styles = StyleSheet.create({
     },
     bigTemperatureText: {
         fontSize: 260,
+        fontWeight: '900',
+        letterSpacing: 0
+    },
+    bigTemperatureTextSmall: {
+        fontSize: 200,
+        fontWeight: '900',
+        letterSpacing: 0
+    },
+    bigTemperatureTextBig: {
+        fontSize: 320,
         fontWeight: '900',
         letterSpacing: 0
     },
