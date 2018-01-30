@@ -1,15 +1,25 @@
-import React, {Component} from 'react';
-import {View, Text, Image, StyleSheet, StatusBar} from 'react-native';
-import {API_AIR_NOW, API_WEATHER_NOW, IMAGE_SERVER} from '../../constant/urls'
+import React from 'react';
+import {Image, StatusBar, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+
+import {API_AIR_NOW, API_WEATHER_NOW, IMAGE_SERVER} from '../../constant/urls';
+
+import Picker from 'react-native-picker';
+import area from '../../constant/area';
+
+import CitySelect from 'react-native-city-select'
+import CITY from '../../constant/cityData'
 
 class Main extends React.Component {
 
-    constructor(props) {
-        super(props);
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             isLoading: true,
             isRefreshing: false,
+            cityStatus: false,
+            cityId: '',
+
             weather_now: {},
 
             // 所在城市
@@ -45,82 +55,94 @@ class Main extends React.Component {
         }
     }
 
+    _createAreaData() {
+        let data = [];
+        let len = area.length;
+        for (let i = 0; i < len; i++) {
+            let city = [];
+            for (let j = 0, cityLen = area[i]['city'].length; j < cityLen; j++) {
+                city.push(area[i]['city'][j]['name']);
+            }
+
+            let _data = {};
+            _data[area[i]['name']] = city;
+            data.push(_data);
+        }
+
+        return data;
+    }
+
+    _showAreaPicker() {
+        Picker.init({
+            pickerConfirmBtnText: 'OK',
+            pickerConfirmBtnColor: [1,1,1,1],
+            pickerCancelBtnText: 'Cancel',
+            pickerCancelBtnColor: [1,1,1,1],
+            pickerTitleColor: [1,1,1,1],
+            pickerToolBarBg: [255,248,220,1],
+            pickerBg: [255,248,220,1],
+            pickerToolBarFontSize: 16,
+            pickerFontSize: 16,
+            pickerTitleText: 'Select City',
+
+            pickerData: this._createAreaData(),
+            selectedValue: ['广东', '广州'],
+            onPickerConfirm: pickedValue => {
+                this.setState({
+                    city: pickedValue[1],
+                });
+                this.setupData(pickedValue[1]);
+            },
+        });
+        Picker.show();
+    }
+
+    handleCityPress = () => {
+        this.setState({
+            cityStatus: true,
+        })
+    }
+
+    handleCitySelect = (cityObj) => {
+        this.setState({
+            cityStatus: false,
+            city: cityObj.cityName,
+            cityId: cityObj.cityId,
+        })
+        this.setupData(cityObj.cityName);
+    }
+
+    handleCityCancel = () => {
+        this.setState({
+            cityStatus: false,
+        })
+    }
+
+    renderCitySelect() {
+        if (this.state.cityStatus) {
+            return (
+                <CitySelect
+                    cancelCity={this.handleCityCancel}
+                    selectCity={this.handleCitySelect}
+                    cityData={CITY}
+                    selectedId={this.state.cityId}
+                />
+            )
+        }
+    }
+
     render() {
         let weather_icon = IMAGE_SERVER + this.state.weather_code + '.png';
-        console.log(weather_icon);
+        console.log(area.length);
 
-        // <Image source={{ uri: weather_icon }} style={{ width: 100, height: 100 }} />
         return (
             <View style={styles.mainPage}>
                 <StatusBar hidden={true}/>
-                <View style={styles.cityName}>
-                    <Text style={styles.cityNameText}>{this.state.city}</Text>
-                </View>
-                <View style={styles.aboutView}>
-                    <View style={styles.aboutItemView}>
-                        <Image source={require('../../images/weatherIcon/qlty.png')} style={styles.aboutItemImage}/>
-                        <Text style={styles.aboutViewText}>{this.state.qlty}</Text>
-                    </View>
-                    <View style={styles.aboutItemView}>
-                        <Image source={require('../../images/weatherIcon/wind_power.png')}
-                               style={styles.aboutItemImage}/>
-                        <Text style={styles.aboutViewText}>{this.state.wind_power} 级</Text>
-                    </View>
-                    <View style={styles.aboutItemView}>
-                        <Image source={require('../../images/weatherIcon/feel_like.png')}
-                               style={styles.aboutItemImage}/>
-                        <Text style={styles.aboutViewText}>{this.state.feel_like}°</Text>
-                    </View>
-                    <View style={styles.aboutImageView}>
-                        <Image source={{uri: weather_icon}} style={{width: 65, height: 65}}/>
-                    </View>
-                </View>
-                <View style={styles.bigTemperatureView}>
-                    <Text style={styles.bigTemperatureText}>{this.state.temperature}</Text>
-                    <View style={styles.bigTemperatureSymbolView}>
-                        <Text style={styles.bigTemperatureSymbol}>°</Text>
-                    </View>
-                </View>
-                <View style={styles.detailView}>
-                    <View style={styles.detailItemView}>
-                        <Image source={require('../../images/weatherIcon/atmospheric_pressure.png')}
-                               style={styles.detailItemImage}/>
-                        <Text style={styles.detailItemText}>{this.state.atmospheric_pressure} kPa</Text>
-                    </View>
-
-                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
-
-                    <View style={styles.detailItemView}>
-                        <Image source={require('../../images/weatherIcon/humidity.png')}
-                               style={styles.detailItemImage}/>
-                        <Text style={styles.detailItemText}>{this.state.humidity} %</Text>
-                    </View>
-
-                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
-
-                    <View style={styles.detailItemView}>
-                        <Image source={require('../../images/weatherIcon/precipitation.png')}
-                               style={styles.detailItemImage}/>
-                        <Text style={styles.detailItemText}>{this.state.precipitation} mm</Text>
-                    </View>
-
-                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
-
-                    <View style={styles.detailItemView}>
-                        <Image source={require('../../images/weatherIcon/cloud.png')} style={styles.detailItemImage}/>
-                        <Text style={styles.detailItemText}>{this.state.cloud} 成</Text>
-                    </View>
-
-                    <View style={{borderLeftWidth: 1, borderColor: 'black', width: 0, height: 70}}></View>
-
-                    <View style={styles.detailItemView}>
-                        <Image source={require('../../images/weatherIcon/visibility.png')}
-                               style={styles.detailItemImage}/>
-                        <Text style={styles.detailItemText}>{this.state.visibility} km</Text>
-                    </View>
-                </View>
-
-
+                {this.renderCityName()}
+                {this.renderAboutView(weather_icon)}
+                {this.renderBigTemperature()}
+                {this.renderDetailView()}
+                {this.renderCitySelect()}
             </View>
         );
 
@@ -128,6 +150,104 @@ class Main extends React.Component {
 
     componentDidMount() {
         this.setupData(this.state.city);
+    }
+
+    renderCityName() {
+        return (
+            <TouchableOpacity style={styles.cityName} onPress={this._showAreaPicker.bind(this)}>
+                <Text style={styles.cityNameText}>{this.state.city}</Text>
+            </TouchableOpacity>
+        );
+    }
+
+    renderAboutView(weather_icon) {
+        return (
+            <View style={styles.aboutView}>
+                <View style={styles.aboutItemView}>
+                    <Image source={require('../../images/weatherIcon/qlty.png')} style={styles.aboutItemImage}/>
+                    <Text style={styles.aboutViewText}>{this.state.qlty}</Text>
+                </View>
+                <View style={styles.aboutItemView}>
+                    <Image source={require('../../images/weatherIcon/wind_power.png')}
+                           style={styles.aboutItemImage}/>
+                    <Text style={styles.aboutViewText}>{this.state.wind_power} 级</Text>
+                </View>
+                <View style={styles.aboutItemView}>
+                    <Image source={require('../../images/weatherIcon/feel_like.png')}
+                           style={styles.aboutItemImage}/>
+                    <Text style={styles.aboutViewText}>{this.state.feel_like}°</Text>
+                </View>
+                <View style={styles.aboutImageView}>
+                    <Image source={{uri: weather_icon}} style={{width: 65, height: 65}}/>
+                </View>
+            </View>
+        );
+
+    }
+
+    renderBigTemperature() {
+        if (this.state.temperature <= -10) {
+            return (
+                <View style={styles.bigTemperatureView}>
+                    <Text style={styles.bigTemperatureTextSmall}>{this.state.temperature}</Text>
+                    <View style={styles.bigTemperatureSymbolView}>
+                        <Text style={styles.bigTemperatureSymbol}>°</Text>
+                    </View>
+                </View>
+            );
+        }
+
+        return (
+            <View style={styles.bigTemperatureView}>
+                <Text style={styles.bigTemperatureText}>{this.state.temperature}</Text>
+                <View style={styles.bigTemperatureSymbolView}>
+                    <Text style={styles.bigTemperatureSymbol}>°</Text>
+                </View>
+            </View>
+        );
+    }
+
+    renderDetailView() {
+        return (
+            <View style={styles.detailView}>
+                <View style={styles.detailItemView}>
+                    <Image source={require('../../images/weatherIcon/atmospheric_pressure.png')}
+                           style={styles.detailItemImage}/>
+                    <Text style={styles.detailItemText}>{this.state.atmospheric_pressure} kPa</Text>
+                </View>
+
+                <View style={styles.cutOffLine}></View>
+
+                <View style={styles.detailItemView}>
+                    <Image source={require('../../images/weatherIcon/humidity.png')}
+                           style={styles.detailItemImage}/>
+                    <Text style={styles.detailItemText}>{this.state.humidity} %</Text>
+                </View>
+
+                <View style={styles.cutOffLine}></View>
+
+                <View style={styles.detailItemView}>
+                    <Image source={require('../../images/weatherIcon/precipitation.png')}
+                           style={styles.detailItemImage}/>
+                    <Text style={styles.detailItemText}>{this.state.precipitation} mm</Text>
+                </View>
+
+                <View style={styles.cutOffLine}></View>
+
+                <View style={styles.detailItemView}>
+                    <Image source={require('../../images/weatherIcon/cloud.png')} style={styles.detailItemImage}/>
+                    <Text style={styles.detailItemText}>{this.state.cloud} 成</Text>
+                </View>
+
+                <View style={styles.cutOffLine}></View>
+
+                <View style={styles.detailItemView}>
+                    <Image source={require('../../images/weatherIcon/visibility.png')}
+                           style={styles.detailItemImage}/>
+                    <Text style={styles.detailItemText}>{this.state.visibility} km</Text>
+                </View>
+            </View>
+        );
     }
 
 
@@ -231,7 +351,7 @@ const styles = StyleSheet.create({
         height: 20,
     },
     aboutViewText: {
-        fontSize: 18,
+        fontSize: 16,
         paddingLeft: 5,
     },
     aboutImageView: {
@@ -249,6 +369,11 @@ const styles = StyleSheet.create({
     },
     bigTemperatureText: {
         fontSize: 260,
+        fontWeight: '900',
+        letterSpacing: 0
+    },
+    bigTemperatureTextSmall: {
+        fontSize: 200,
         fontWeight: '900',
         letterSpacing: 0
     },
@@ -285,6 +410,12 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: '500',
         paddingTop: 10,
+    },
+    cutOffLine: {
+        borderLeftWidth: 1,
+        borderColor: 'black',
+        width: 0,
+        height: 70
     }
 
 

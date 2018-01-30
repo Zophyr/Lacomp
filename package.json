@@ -23,6 +23,8 @@
     "jshint": "^2.9.5",
     "react": "16.0.0",
     "react-native": "^0.52",
-    "react-navigation": "^1.0.0-beta.27"
+    "react-navigation": "^1.0.0-beta.27",
+    "react-native-city-select": "^0.1.5",
+    "react-native-picker": "^4.3.5"
   }
 }
