@@ -256,25 +256,7 @@ class Main extends React.Component {
         fetch(apiOfWeatherNow)
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson.HeWeather6[0].status === 'unknown city') {
-                    this.setState({
-                        city: '∞',
-                        weather_now: '∞',
-                        temperature: '∞',
-                        feel_like: '∞',
-                        weather_text: '∞',
-                        weather_code: '∞',
-                        wind_direction: '∞',
-                        wind_power: '∞',
-                        wind_speed: '∞',
-                        humidity: '∞',
-                        precipitation: '∞',
-                        atmospheric_pressure: '∞',
-                        visibility: '∞',
-                        cloud: '∞'
-                    })
-                }
-                else if (responseJson.HeWeather6[0].status === 'no data for this location') {
+                if (responseJson.HeWeather6[0].status !== 'ok') {
                     this.setState({
                         city: '∞',
                         weather_now: '∞',
@@ -342,13 +324,7 @@ class Main extends React.Component {
         fetch(apiOfAirNow)
             .then((response) => response.json())
             .then((responseJson) => {
-                if (responseJson.HeWeather6[0].status === 'no data for this location') {
-                    this.setState({
-                        aqi: '∞',
-                        qlty: '∞',
-                    })
-                }
-                else if (responseJson.HeWeather6[0].status === 'unknown city') {
+                if (responseJson.HeWeather6[0].status !== 'ok') {
                     this.setState({
                         aqi: '∞',
                         qlty: '∞',
