@@ -196,6 +196,17 @@ class Main extends React.Component {
             );
         }
 
+        if (0 <= this.state.temperature && this.state.temperature < 10) {
+            return (
+                <View style={styles.bigTemperatureView}>
+                    <Text style={styles.bigTemperatureTextBig}>{this.state.temperature}</Text>
+                    <View style={styles.bigTemperatureSymbolView}>
+                        <Text style={styles.bigTemperatureSymbol}>°</Text>
+                    </View>
+                </View>
+            );
+        }
+
         return (
             <View style={styles.bigTemperatureView}>
                 <Text style={styles.bigTemperatureText}>{this.state.temperature}</Text>
@@ -404,6 +415,11 @@ const styles = StyleSheet.create({
     },
     bigTemperatureTextSmall: {
         fontSize: 200,
+        fontWeight: '900',
+        letterSpacing: 0
+    },
+    bigTemperatureTextBig: {
+        fontSize: 320,
         fontWeight: '900',
         letterSpacing: 0
     },
