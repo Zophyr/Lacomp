@@ -257,45 +257,65 @@ class Main extends React.Component {
         fetch(apiOfWeatherNow)
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    weather_now: responseJson.HeWeather6[0].now,
+                if (responseJson.HeWeather6[0].status !== 'ok') {
+                    this.setState({
+                        city: '∞',
+                        weather_now: '∞',
+                        temperature: '∞',
+                        feel_like: '∞',
+                        weather_text: '∞',
+                        weather_code: '∞',
+                        wind_direction: '∞',
+                        wind_power: '∞',
+                        wind_speed: '∞',
+                        humidity: '∞',
+                        precipitation: '∞',
+                        atmospheric_pressure: '∞',
+                        visibility: '∞',
+                        cloud: '∞'
+                    })
+                }
+                else {
+                    this.setState({
+                        weather_now: responseJson.HeWeather6[0].now,
 
-                    // 温度
-                    temperature: responseJson.HeWeather6[0].now.tmp,
+                        // 温度
+                        temperature: responseJson.HeWeather6[0].now.tmp,
 
-                    // 体感温度
-                    feel_like: responseJson.HeWeather6[0].now.fl,
+                        // 体感温度
+                        feel_like: responseJson.HeWeather6[0].now.fl,
 
-                    // 天气状况
-                    weather_text: responseJson.HeWeather6[0].now.cond_txt,
+                        // 天气状况
+                        weather_text: responseJson.HeWeather6[0].now.cond_txt,
 
-                    // 天气状况编码
-                    weather_code: responseJson.HeWeather6[0].now.cond_code,
+                        // 天气状况编码
+                        weather_code: responseJson.HeWeather6[0].now.cond_code,
 
-                    // 风向
-                    wind_direction: responseJson.HeWeather6[0].now.wind_dir,
+                        // 风向
+                        wind_direction: responseJson.HeWeather6[0].now.wind_dir,
 
-                    // 风力
-                    wind_power: responseJson.HeWeather6[0].now.wind_sc,
+                        // 风力
+                        wind_power: responseJson.HeWeather6[0].now.wind_sc,
 
-                    // 风速
-                    wind_speed: responseJson.HeWeather6[0].now.wind_spd,
+                        // 风速
+                        wind_speed: responseJson.HeWeather6[0].now.wind_spd,
 
-                    // 相对湿度
-                    humidity: responseJson.HeWeather6[0].now.hum,
+                        // 相对湿度
+                        humidity: responseJson.HeWeather6[0].now.hum,
 
-                    // 降水量
-                    precipitation: responseJson.HeWeather6[0].now.pcpn,
+                        // 降水量
+                        precipitation: responseJson.HeWeather6[0].now.pcpn,
 
-                    // 大气压强
-                    atmospheric_pressure: responseJson.HeWeather6[0].now.pres,
+                        // 大气压强
+                        atmospheric_pressure: responseJson.HeWeather6[0].now.pres,
 
-                    // 能见度
-                    visibility: responseJson.HeWeather6[0].now.vis,
+                        // 能见度
+                        visibility: responseJson.HeWeather6[0].now.vis,
 
-                    // 云量
-                    cloud: responseJson.HeWeather6[0].now.cloud
-                })
+                        // 云量
+                        cloud: responseJson.HeWeather6[0].now.cloud
+                    })
+                }
             })
             .catch((error) => {
                 console.error(error);
@@ -305,14 +325,25 @@ class Main extends React.Component {
         fetch(apiOfAirNow)
             .then((response) => response.json())
             .then((responseJson) => {
-                this.setState({
-                    // 空气质量指数
-                    aqi: responseJson.HeWeather6[0].air_now_city.aqi,
+                if (responseJson.HeWeather6[0].status !== 'ok') {
+                    this.setState({
+                        aqi: '∞',
+                        qlty: '∞',
+                    })
+                }
+                else {
+                    this.setState({
+                        // 空气质量指数
+                        aqi: responseJson.HeWeather6[0].air_now_city.aqi,
 
-                    // 空气质量
-                    qlty: responseJson.HeWeather6[0].air_now_city.qlty,
-                })
+                        // 空气质量
+                        qlty: responseJson.HeWeather6[0].air_now_city.qlty,
+                    })
+                }
             })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
 
